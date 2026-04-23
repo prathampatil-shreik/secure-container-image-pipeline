@@ -25,31 +25,25 @@ pipeline {
 
         stage('Build') {
             steps {
-                dir('loan-calculator') {
-                    bat 'mvn clean package -DskipTests -q'
-                }
+                bat 'mvn clean package -DskipTests -q'
             }
         }
 
         stage('Test') {
             steps {
-                dir('loan-calculator') {
-                    bat 'mvn test'
-                }
+                bat 'mvn test'
             }
             post {
                 always {
-                    junit allowEmptyResults: true, testResults: 'loan-calculator/target/surefire-reports/*.xml'
+                    junit allowEmptyResults: true, testResults: 'target/surefire-reports/*.xml'
                 }
             }
         }
 
         stage('Docker Build') {
             steps {
-                dir('loan-calculator') {
-                    bat "docker build -t %DOCKER_HUB_REPO%:%IMAGE_TAG% ."
-                    bat "docker tag %DOCKER_HUB_REPO%:%IMAGE_TAG% %DOCKER_HUB_REPO%:latest"
-                }
+                bat "docker build -t %DOCKER_HUB_REPO%:%IMAGE_TAG% ."
+                bat "docker tag %DOCKER_HUB_REPO%:%IMAGE_TAG% %DOCKER_HUB_REPO%:latest"
             }
         }
 
