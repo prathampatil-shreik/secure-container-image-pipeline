@@ -4,7 +4,7 @@ pipeline {
     environment {
         IMAGE_NAME      = "loan-calculator"
         IMAGE_TAG       = "${BUILD_NUMBER}"
-        DOCKER_HUB_REPO = "your-dockerhub-username/loan-calculator"
+        DOCKER_HUB_REPO = "pratham20021/loan-calculator"
     }
 
     tools {
