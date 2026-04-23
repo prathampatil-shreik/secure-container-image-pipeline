@@ -2,9 +2,9 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = "loan-calculator"
-        IMAGE_TAG  = "${BUILD_NUMBER}"
-        DOCKER_HUB_REPO = "your-dockerhub-username/${IMAGE_NAME}"
+        IMAGE_NAME      = "loan-calculator"
+        IMAGE_TAG       = "${BUILD_NUMBER}"
+        DOCKER_HUB_REPO = "your-dockerhub-username/loan-calculator"
     }
 
     tools {
@@ -26,7 +26,7 @@ pipeline {
         stage('Build') {
             steps {
                 dir('loan-calculator') {
-                    sh 'mvn clean package -DskipTests -q'
+                    bat 'mvn clean package -DskipTests -q'
                 }
             }
         }
@@ -34,7 +34,7 @@ pipeline {
         stage('Test') {
             steps {
                 dir('loan-calculator') {
-                    sh 'mvn test'
+                    bat 'mvn test'
                 }
             }
             post {
@@ -47,8 +47,8 @@ pipeline {
         stage('Docker Build') {
             steps {
                 dir('loan-calculator') {
-                    sh "docker build -t ${DOCKER_HUB_REPO}:${IMAGE_TAG} ."
-                    sh "docker tag ${DOCKER_HUB_REPO}:${IMAGE_TAG} ${DOCKER_HUB_REPO}:latest"
+                    bat "docker build -t %DOCKER_HUB_REPO%:%IMAGE_TAG% ."
+                    bat "docker tag %DOCKER_HUB_REPO%:%IMAGE_TAG% %DOCKER_HUB_REPO%:latest"
                 }
             }
         }
@@ -60,19 +60,19 @@ pipeline {
                     usernameVariable: 'DOCKER_USER',
                     passwordVariable: 'DOCKER_PASS'
                 )]) {
-                    sh "echo ${DOCKER_PASS} | docker login -u ${DOCKER_USER} --password-stdin"
-                    sh "docker push ${DOCKER_HUB_REPO}:${IMAGE_TAG}"
-                    sh "docker push ${DOCKER_HUB_REPO}:latest"
+                    bat "docker login -u %DOCKER_USER% -p %DOCKER_PASS%"
+                    bat "docker push %DOCKER_HUB_REPO%:%IMAGE_TAG%"
+                    bat "docker push %DOCKER_HUB_REPO%:latest"
                 }
             }
         }
 
         stage('Deploy') {
             steps {
-                sh """
-                    docker stop ${IMAGE_NAME} || true
-                    docker rm   ${IMAGE_NAME} || true
-                    docker run -d --name ${IMAGE_NAME} -p 8080:8080 ${DOCKER_HUB_REPO}:latest
+                bat """
+                    docker stop %IMAGE_NAME% || exit 0
+                    docker rm   %IMAGE_NAME% || exit 0
+                    docker run -d --name %IMAGE_NAME% -p 8080:8080 %DOCKER_HUB_REPO%:latest
                 """
             }
         }
@@ -81,6 +81,6 @@ pipeline {
     post {
         success { echo "Pipeline completed successfully. App running on port 8080." }
         failure { echo "Pipeline failed. Check the logs above." }
-        always  { sh "docker logout || true" }
+        always  { bat "docker logout || exit 0" }
     }
 }
