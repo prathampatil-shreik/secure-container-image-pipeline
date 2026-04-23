@@ -16,7 +16,10 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                checkout scm
+                checkout([$class: 'GitSCM',
+                    branches: [[name: '*/main']],
+                    userRemoteConfigs: [[url: 'https://github.com/pratham20021/loan-calculator.git']]
+                ])
             }
         }
 
