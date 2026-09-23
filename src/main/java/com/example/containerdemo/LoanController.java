@@ -1,4 +1,4 @@
-package com.loan;
+package com.example.containerdemo;
 
 import org.springframework.web.bind.annotation.*;
 
@@ -10,7 +10,7 @@ public class LoanController {
     @PostMapping("/calculate")
     public LoanResponse calculate(@RequestBody LoanRequest request) {
         double P = request.getPrincipal();
-        double r = request.getAnnualInterestRate() / 12 / 100; // monthly rate
+        double r = request.getAnnualInterestRate() / 12 / 100;
         int n = request.getTenureMonths();
 
         double emi;

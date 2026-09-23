@@ -1,0 +1,22 @@
+# Version control
+.git
+.gitignore
+
+# CI/CD — not needed in image
+.github
+
+# Build output — rebuilt inside Docker
+target
+
+# Docs and local notes
+docs
+*.md
+
+# IDE files
+.idea
+*.iml
+.vscode
+
+# OS noise
+.DS_Store
+Thumbs.db

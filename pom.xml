@@ -10,8 +10,8 @@
         <version>3.2.0</version>
     </parent>
 
-    <groupId>com.loan</groupId>
-    <artifactId>loan-calculator</artifactId>
+    <groupId>com.example</groupId>
+    <artifactId>containerdemo</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
 

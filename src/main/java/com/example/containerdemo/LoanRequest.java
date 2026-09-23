@@ -1,4 +1,4 @@
-package com.loan;
+package com.example.containerdemo;
 
 public class LoanRequest {
     private double principal;

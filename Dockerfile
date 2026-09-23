@@ -7,8 +7,11 @@ COPY src ./src
 RUN mvn clean package -DskipTests -q
 
 # Stage 2: Run
-FROM eclipse-temurin:17-jre-alpine
+FROM eclipse-temurin:17-jre-jammy
+RUN addgroup --system appgroup && adduser --system --ingroup appgroup appuser
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
+RUN chown appuser:appgroup app.jar
+USER appuser
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app.jar"]
