@@ -8,7 +8,12 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.4.13</version>
+        <relativePath/>
     </parent>
+
+    <properties>
+        <tomcat.version>10.1.59</tomcat.version>
+    </properties>
 
     <groupId>com.example</groupId>
     <artifactId>containerdemo</artifactId>
